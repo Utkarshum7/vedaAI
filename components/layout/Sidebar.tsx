@@ -32,13 +32,15 @@ interface NavItem {
   label: string
   href: string
   icon: React.ReactNode
+  badge?: number
 }
 
 interface SidebarProps {
   className?: string
+  defaultActiveItem?: string
 }
 
-export function Sidebar({ className }: SidebarProps) {
+export function Sidebar({ className, defaultActiveItem }: SidebarProps) {
   const pathname = usePathname()
 
   const navItems: NavItem[] = [
@@ -46,12 +48,13 @@ export function Sidebar({ className }: SidebarProps) {
     { label: "My Groups", href: "/groups", icon: <Users className="h-4 w-4" /> },
     {
       label: "Assignments",
-      href: ROUTES.DASHBOARD,
+      href: "/assignments",
       icon: <FileText className="h-4 w-4" />,
+      badge: 10,
     },
     {
       label: "AI Teacher's Toolkit",
-      href: "/ai-toolkit",
+      href: "/ai-toolkit/preview",
       icon: <Sparkles className="h-4 w-4" />,
     },
   ]
@@ -83,7 +86,7 @@ export function Sidebar({ className }: SidebarProps) {
 
         {/* Create Assignment Button */}
         <div className="px-4 pb-2">
-          <Link href={ROUTES.CREATE}>
+          <Link href="/create-assignment">
             <Button className="w-full justify-center gap-2 rounded-lg border-2 border-orange-400 bg-transparent text-sm font-medium text-orange-600 shadow-none hover:bg-orange-50">
               <Plus className="h-4 w-4" strokeWidth={2.5} />
               Create Assignment
@@ -95,7 +98,10 @@ export function Sidebar({ className }: SidebarProps) {
         <nav className="flex-1 px-3 py-3">
           <ul className="space-y-0.5">
             {navItems.map((item) => {
-              const isActive = pathname === item.href
+              // Use defaultActiveItem if provided, otherwise use pathname
+              const isActive = defaultActiveItem
+                ? item.label === defaultActiveItem
+                : pathname === item.href
               return (
                 <li key={item.label}>
                   <Link
@@ -108,7 +114,12 @@ export function Sidebar({ className }: SidebarProps) {
                     )}
                   >
                     {item.icon}
-                    {item.label}
+                    <span className="flex-1">{item.label}</span>
+                    {item.badge && (
+                      <span className="flex h-5 min-w-5 items-center justify-center rounded bg-gray-200 px-1.5 text-xs font-medium text-gray-700">
+                        {item.badge}
+                      </span>
+                    )}
                   </Link>
                 </li>
               )
@@ -121,7 +132,10 @@ export function Sidebar({ className }: SidebarProps) {
           {/* Secondary Navigation */}
           <ul className="space-y-0.5">
             {secondaryItems.map((item) => {
-              const isActive = pathname === item.href
+              // Use defaultActiveItem if provided, otherwise use pathname
+              const isActive = defaultActiveItem
+                ? item.label === defaultActiveItem
+                : pathname === item.href
               return (
                 <li key={item.label}>
                   <Link

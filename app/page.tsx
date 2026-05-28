@@ -14,6 +14,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { DashboardLayout } from '@/components/layout';
 import { EmptyState } from '@/components/dashboard';
 import { AssignmentCard } from '@/components/dashboard';
@@ -31,13 +32,19 @@ export default function Page() {
   if (assignments.length === 0) {
     return (
       <DashboardLayout>
-        <div className="flex h-full items-center justify-center">
+        <div className="flex h-full flex-col items-center justify-center gap-4">
           <EmptyState
             title="No assignments yet"
             description="Create your first assignment to start collecting and grading student submissions. You can set up rubrics, define marking criteria, and let AI assist with grading."
             actionLabel="Create Your First Assignment"
             onAction={() => router.push(ROUTES.CREATE)}
           />
+          <Link
+            href="/assignments"
+            className="text-sm text-gray-500 underline hover:text-gray-700"
+          >
+            View Filled State (Screen 2)
+          </Link>
         </div>
       </DashboardLayout>
     );

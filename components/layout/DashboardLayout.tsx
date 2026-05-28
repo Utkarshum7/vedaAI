@@ -30,20 +30,33 @@ import { X } from "lucide-react"
 interface DashboardLayoutProps {
   children: React.ReactNode
   className?: string
+  title?: string
+  showBackButton?: boolean
+  defaultActiveItem?: string
 }
 
 /**
  * Dashboard Layout Component (v0)
- * 
+ *
  * Provides the main layout structure with sidebar, navbar, and mobile navigation.
+ *
+ * @param title - Optional page title to display in navbar
+ * @param showBackButton - Whether to show back button in navbar
+ * @param defaultActiveItem - Override active sidebar item (useful for nested routes)
  */
-export function DashboardLayout({ children, className }: DashboardLayoutProps) {
+export function DashboardLayout({
+  children,
+  className,
+  title,
+  showBackButton = false,
+  defaultActiveItem,
+}: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className="flex h-screen overflow-hidden bg-white">
       {/* Desktop Sidebar */}
-      <Sidebar className="hidden lg:flex" />
+      <Sidebar className="hidden lg:flex" defaultActiveItem={defaultActiveItem} />
 
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
@@ -60,7 +73,7 @@ export function DashboardLayout({ children, className }: DashboardLayoutProps) {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <Sidebar className="h-full w-full" />
+        <Sidebar className="h-full w-full" defaultActiveItem={defaultActiveItem} />
         <button
           onClick={() => setSidebarOpen(false)}
           className="absolute right-3 top-3 rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
@@ -74,7 +87,8 @@ export function DashboardLayout({ children, className }: DashboardLayoutProps) {
       <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar
           onMenuClick={() => setSidebarOpen(true)}
-          onBackClick={() => window.history.back()}
+          onBackClick={showBackButton ? () => window.history.back() : undefined}
+          title={title}
         />
 
         {/* Content with off-white background */}
