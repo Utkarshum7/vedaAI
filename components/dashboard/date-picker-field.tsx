@@ -44,7 +44,6 @@ export function DatePickerField({
           mode="single"
           selected={date}
           onSelect={onDateChange}
-          initialFocus
         />
       </PopoverContent>
     </Popover>
