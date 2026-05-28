@@ -87,6 +87,7 @@ export function DashboardLayout({
       <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar
           onMenuClick={() => setSidebarOpen(true)}
+          showBackButton={showBackButton}
           onBackClick={showBackButton ? () => window.history.back() : undefined}
           title={title}
         />

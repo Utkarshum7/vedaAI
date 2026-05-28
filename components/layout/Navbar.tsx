@@ -25,7 +25,7 @@ interface NavbarProps {
 
 export function Navbar({
   title = "Assignment",
-  showBackButton = true,
+  showBackButton = false,
   onBackClick,
   onMenuClick,
   className,
